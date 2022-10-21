@@ -52,6 +52,7 @@ namespace Part1
 
         float HP, Damage;
         int MaxHP;
+        public static int GoldPurse;
 
         public string[] Vision = { "North", "South", "East", "West" };
 
@@ -59,6 +60,19 @@ namespace Part1
         public enum Movement
         {
             NoMovement, Up, Down, Left, Right
+        }¿¿
+
+        public GoldPurse()
+        {
+            return GoldPurse;
+        }
+
+        public void Pickup(Item i)
+        {
+            if (i == "Gold")
+            {
+                GoldPurse++;
+            }
         }
 
         //Attack Method
@@ -125,10 +139,10 @@ namespace Part1
     {
         public Random rnd = new Random();
         public static int EnemyMaxHP, EnemyDamage, X, Y;
-        public float EnemyHP;
-        public string EnemySymbol;
+        public static float EnemyHP;
+        public static string EnemySymbol;
 
-        public void constructEnemy(int posX, int posY, int EnemyHP, int givenEnemyDamage, string Symbol)
+        public Enemy(int posX, int posY, int EnemyHP, int givenEnemyDamage, string Symbol)
         {
             X = posX;
             Y = posY;
@@ -142,19 +156,23 @@ namespace Part1
             Console.WriteLine("Enemy at " + (Convert.ToString(X)) + " " + (Convert.ToString(Y)) + (Convert.ToString(EnemyDamage)));
         }
 
+
     }
 
     public class SwampCreature : Enemy
     {
-        public void constructSwampCreature(int posX, int posY)
+        public SwampCreature(int posX, int posY)
         {
-            X = posX;
-            Y = posY;
-            EnemyHP = 10;
-            EnemyDamage = 1;
-            EnemySymbol = "$";
+
+            Enemy.X = posX;
+            Enemy.Y = posY;
+            Enemy.EnemyHP= 10;
+            Enemy.EnemyDamage = 1;
+            Enemy.EnemySymbol = "$";
+
         }
 
+        //Player ReturnMove override method
         public override Movement ReturnMove(Movement Move = Movement.NoMovement)
         {
             int MovementInt = rnd.Next(1, 6);
@@ -191,13 +209,14 @@ namespace Part1
                 return 0;
         }
 
+        //Hero class
         public class Hero : Character
         {
             int HeroX, HeroY, HeroDmg, HeroMaxHP;
             float HeroHP;
          
-
-            public void constructHero(int posX, int posY, int HP)
+            //Hero Constructor
+            public Hero(int posX, int posY, int HP)
             {
                 HeroX = posX;
                 HeroY = posY;
@@ -238,13 +257,222 @@ namespace Part1
             //Overrided ToString method in Character Subclass
             private string ToString()
             {
-                string Output = "Player Stats: \n HP: " + (Convert.ToString(HeroHP/HeroMaxHP)) + "\n Damage: " + HeroDmg + "[" + HeroX + " " + HeroY + "]";
+                string Output = "Player Stats: \n HP: " + (Convert.ToString(HeroHP/HeroMaxHP)) + "\n Damage: " + HeroDmg + "\n Gold: " + (Convert.ToString(Character.GoldPurse) + "\n" + "[" + HeroX + " " + HeroY + "]";
                 return Output;
             }
 
         }
 
     }
+
+    public class Map
+    {
+        //Map creation array
+        char[,] Tile = new string[8, 15] { {"X","X","X","X", "X" , "X" , "X" , "X" , "X" , "X" , "X" , "X" , "X" , "X" , "X" }, 
+            {"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"},{"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"} 
+            {"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"},
+            {"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"},{"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"},
+            {"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"},{"X","*","*","*","*","*","*","*","*","*","*","*","*","*","X"}};
+
+        //Map variables
+        Map Hero = new Map();
+        string[] Enemy = { "Swamp Creatures", "Mage" };
+        String[] Item = new string[Gold];
+        static Random rndNumbers = new Random();
+
+        int NumEnemies; 
+        int MapWidth;
+        int MapHeight;
+        static int Gold;
+
+        //Map constructor
+        public Map(int MaxWidth, int MinWidth, int MaxHeight, int MinHeight, int NumberOfEnemies, int AmountOfGold)
+        {
+            MapWidth = MaxWidth;
+            MapHeight = MaxHeight;
+            NumEnemies = NumberOfEnemies;
+            Gold = AmountOfGold;
+
+
+            Create();
+        }
+
+        //Create()
+        public void Create()
+        {
+            int i, k, PosX, PosY;
+            i = rndNumbers.Next(1,6);
+
+            for (k = 0; k <= i; k++)
+            {
+                PosX = rndNumbers.Next(1, 6);
+                PosY = rndNumbers.Next(1, 6);
+
+                Gold Gold = new Gold(PosX,PosY);
+            }
+
+            UpdateVision();
+
+
+        }
+
+        //UpdateVision
+        public void UpdateVision()
+        {
+
+        }
+
+        //Tile create
+        private static Tile Create(Tile.TileType Type)
+        {
+            Random rnd = new Random();
+            int TileX = rnd.Next(1, 16);
+            int TileY = rnd.Next(1, 9);
+
+            return (Tile);
+
+        }
+
+        public Item GetItemAtPosition(int X, int Y)
+        {
+            int i;
+            for (i = 0; i < Item.Length; i++)
+            {
+                if (Item(X, Y))
+                {
+                    return Item;
+                }
+                else if (Item[i] == null)
+                {
+                    return null;
+                }
+            }
+            
+            
+        }
+
+    }
+
+    //Q3.3
+    //Game engine Class
+    public class GameEngine
+    {
+        private Map map;
+
+        public Map getMap()
+        {
+            return map;
+        }
+
+        GameEngine Map = new GameEngine();
+
+
+        public bool MovePlayer()
+        {
+            if (SwampCreature.Hero.TileX == Item.TileX && SwampCreature.Hero.TileY == Item.TileY)
+            {
+                return true;
+            }
+        }
+
+        public void EnemyAttacks()
+        {
+           
+        }
+
+        public void EnemyMove()
+        {
+
+        }
+
+        //Q4.1
+        private void Save()
+        {
+            string fileName = @"E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\bin";
+            using (BinaryWriter binWriter = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+            {
+                binWriter.Write(Map.getMap);
+            }
+        }
+
+        //Q4.2
+        private void Load()
+        {
+            string fileName = @"E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\bin";
+            using (BinaryReader binReader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+            {
+                Map map = Map.getMap(binReader.ReadString());
+            }
+        }
+
+    }
+
+
+    //Part 2
+    //Q2.1
+    public abstract class Item : Tile
+    {
+
+        public Item(int X, int Y)
+        {
+            Initiate(X, Y);
+
+        }
+
+        public abstract Type ToString();
+
+       
+
+    }
+
+    //Q2.2
+    //Concrete Class Gold
+    public class Gold 
+    {
+        private int GoldAmount;
+        private Random rndAmount;
+        private int X, Y;
+
+        public Gold(int PosX, int PosY)
+        {
+            X = PosX;
+            Y = PosY;
+            
+            Item = new Item(X, Y);
+            rndAmount.Next(1, 6);
+
+        }
+
+        //Q2.3
+        //Concrete Class Mage
+        public class Mage : Enemy
+        {
+            public Mage(int PosMageX, int PosMageY) 
+            {
+                Enemy.X = PosMageX;
+                Enemy.Y = PosMageY;
+                EnemyHP = 5;
+                EnemyDamage = 5;
+                EnemySymbol = "M";
+
+            }
+
+            public override Movement ReturnMove(Movement Move = Movement.NoMovement)
+            {
+                return 0;
+            }
+
+            public override bool CheckRange(Character target)
+            {
+                return base.CheckRange(target);
+            }
+        }
+
+
+
+    }
+
+
 
 }
 
