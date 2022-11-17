@@ -1,2 +1,3 @@
-# Part1
+# GAME DEV PROJECT
 GADE6112
+Jordan Muller ST10150702
