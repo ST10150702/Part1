@@ -1,0 +1,5 @@
+E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\obj\Debug\net6.0\Part1.csproj.AssemblyReference.cache
+E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\obj\Debug\net6.0\Part1.GeneratedMSBuildEditorConfig.editorconfig
+E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\obj\Debug\net6.0\Part1.AssemblyInfoInputs.cache
+E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\obj\Debug\net6.0\Part1.AssemblyInfo.cs
+E:\Uni\Game Dev\Semester 2\Game Dev Project\Part1\obj\Debug\net6.0\Part1.csproj.CoreCompileInputs.cache
